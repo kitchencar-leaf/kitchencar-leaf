@@ -90,12 +90,16 @@ const MenuView = (() => {
 
     try {
       const items = await SHEETS.fetchSheet('menu');
-      if (!items.length) return;
+      if (!items.length) {
+        grid.innerHTML = '<p class="menu-cards__empty">現在、メニュー情報がありません。</p>';
+        return;
+      }
 
       grid.innerHTML = items.map(cardHtml).join('');
       setupModal(items);
     } catch (err) {
       console.error('MenuView: failed to load menu sheet', err);
+      grid.innerHTML = '<p class="menu-cards__empty">メニュー情報の読み込みに失敗しました。</p>';
     }
   }
 

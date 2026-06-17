@@ -129,6 +129,10 @@ const ScheduleView = (() => {
   }
 
   async function render() {
+    const today = startOfToday();
+    calendarYear = today.getFullYear();
+    calendarMonth = today.getMonth();
+
     try {
       const rows = await SHEETS.fetchSheet('schedule');
       allEvents = rows
@@ -136,17 +140,14 @@ const ScheduleView = (() => {
         .map((row) => ({ ...row, dateObj: parseDate(row.date) }))
         .filter((row) => row.dateObj)
         .sort((a, b) => a.dateObj - b.dateObj);
-
-      const today = startOfToday();
-      calendarYear = today.getFullYear();
-      calendarMonth = today.getMonth();
-
-      renderEventList();
-      renderCalendar();
-      setupCalendarNav();
     } catch (err) {
       console.error('ScheduleView: failed to load schedule sheet', err);
+      allEvents = [];
     }
+
+    renderEventList();
+    renderCalendar();
+    setupCalendarNav();
   }
 
   return { render };
