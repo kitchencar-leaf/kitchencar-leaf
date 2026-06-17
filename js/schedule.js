@@ -2,7 +2,24 @@
 // "schedule" Google Sheet tab.
 const ScheduleView = (() => {
   const WEEKDAY_JP = ['日', '月', '火', '水', '木', '金', '土'];
-  const STATUS_LABEL = { canceled: '中止', soldout: '完売' };
+
+  // Display priority: status (canceled/soldout) overrides schedule_type
+  // (closed/away/regular). hidden events are filtered out before this runs.
+  const TYPE_LABEL = {
+    canceled: '中止',
+    soldout: '完売',
+    closed: 'お休み',
+    away: '遠征出店',
+    regular: '通常出店',
+  };
+
+  function getDisplayType(ev) {
+    if (ev.status === 'canceled') return 'canceled';
+    if (ev.status === 'soldout') return 'soldout';
+    if (ev.schedule_type === 'closed') return 'closed';
+    if (ev.schedule_type === 'away') return 'away';
+    return 'regular';
+  }
 
   let allEvents = [];
   let calendarYear;
@@ -33,18 +50,21 @@ const ScheduleView = (() => {
   }
 
   function eventItemHtml(ev) {
-    const statusLabel = STATUS_LABEL[ev.status];
+    const type = getDisplayType(ev);
+    const label = TYPE_LABEL[type];
+    const displayPlace = ev.place || (type === 'closed' ? 'お休み' : '');
+
     return `
-      <div class="event-item${ev.status === 'canceled' ? ' event-item--canceled' : ''}">
+      <div class="event-item event-item--${type}">
         <div class="event-item__date-row">
           <span class="event-item__date">${formatEventDate(ev.dateObj)}</span>
           ${ev.start_time ? `<span class="event-item__time">${escapeHtml(ev.start_time)}${ev.end_time ? `–${escapeHtml(ev.end_time)}` : ''}</span>` : ''}
-          ${statusLabel ? `<span class="event-item__status event-item__status--${ev.status}">${statusLabel}</span>` : ''}
+          ${type !== 'regular' ? `<span class="event-item__status event-item__status--${type}">${label}</span>` : ''}
         </div>
-        ${ev.place ? `
+        ${displayPlace ? `
         <div class="event-item__place">
           <img src="assets/images/leaf-icon05.png" alt="">
-          <span>${escapeHtml(ev.place)}</span>
+          <span>${escapeHtml(displayPlace)}</span>
         </div>` : ''}
         ${ev.address ? `
         <div class="event-item__tag-row">
@@ -85,7 +105,7 @@ const ScheduleView = (() => {
     allEvents.forEach((ev) => {
       if (!ev.dateObj) return;
       if (ev.dateObj.getFullYear() === calendarYear && ev.dateObj.getMonth() === calendarMonth) {
-        eventsByDay[ev.dateObj.getDate()] = ev.status;
+        eventsByDay[ev.dateObj.getDate()] = getDisplayType(ev);
       }
     });
 
@@ -96,9 +116,9 @@ const ScheduleView = (() => {
     for (let day = 1; day <= daysInMonth; day++) {
       const weekday = new Date(calendarYear, calendarMonth, day).getDay();
       const dowClass = weekday === 0 ? ' sun' : weekday === 6 ? ' sat' : '';
-      const status = eventsByDay[day];
-      if (status) {
-        html += `<div class="calendar__day-event"><span class="calendar__day-event--${status}">${day}</span></div>`;
+      const type = eventsByDay[day];
+      if (type) {
+        html += `<div class="calendar__day-event"><span class="calendar__day-event--${type}">${day}</span></div>`;
       } else {
         html += `<div class="calendar__day${dowClass}">${day}</div>`;
       }

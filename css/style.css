@@ -437,11 +437,18 @@ a {
 .calendar__legend {
   display: flex;
   align-items: center;
-  gap: 7px;
+  flex-wrap: wrap;
+  gap: 6px 14px;
   margin-top: 16px;
   font-size: 11px;
   color: #6a6660;
   font-weight: 300;
+}
+
+.calendar__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .calendar__legend-dot {
@@ -450,6 +457,26 @@ a {
   border-radius: 50%;
   background: #4a6b3c;
   flex-shrink: 0;
+}
+
+.calendar__legend-dot--regular {
+  background: #4a6b3c;
+}
+
+.calendar__legend-dot--away {
+  background: #5a7fa0;
+}
+
+.calendar__legend-dot--closed {
+  background: #9a958c;
+}
+
+.calendar__legend-dot--canceled {
+  background: #a05c4a;
+}
+
+.calendar__legend-dot--soldout {
+  background: #8a7e5a;
 }
 
 .schedule__heading {
@@ -549,6 +576,16 @@ a {
   color: #8a7e5a;
 }
 
+.event-item__status--closed {
+  background: #e7e5e0;
+  color: #9a958c;
+}
+
+.event-item__status--away {
+  background: #dde6ec;
+  color: #5a7fa0;
+}
+
 .event-item__note {
   font-size: 12px;
   color: #8a8680;
@@ -573,9 +610,20 @@ a {
   font-weight: 300;
 }
 
-.calendar__day-event span.calendar__day-event--canceled,
+.calendar__day-event span.calendar__day-event--away {
+  background: #5a7fa0;
+}
+
+.calendar__day-event span.calendar__day-event--closed {
+  background: #9a958c;
+}
+
+.calendar__day-event span.calendar__day-event--canceled {
+  background: #a05c4a;
+}
+
 .calendar__day-event span.calendar__day-event--soldout {
-  background: #c4beb0;
+  background: #8a7e5a;
 }
 
 
