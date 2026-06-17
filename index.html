@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LEAF | キッチンカー LEAF</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ========== NAV ========== -->
+<nav class="nav">
+  <img src="assets/images/leaf_logo_bk_backless.png" class="nav__logo" alt="LEAF">
+  <div class="nav__links" id="navLinks">
+    <span>HOME</span>
+    <span>MENU</span>
+    <span>SCHEDULE</span>
+    <span>ABOUT</span>
+    <span>CONTACT</span>
+    <div class="nav__social">
+      <img src="assets/images/leaf-icon06.png" alt="Instagram">
+    </div>
+  </div>
+  <button class="hamburger" id="hamburgerBtn" aria-label="メニューを開く" aria-expanded="false" aria-controls="navDrawer">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<div class="nav-drawer" id="navDrawer">
+  <span>HOME</span>
+  <span>MENU</span>
+  <span>SCHEDULE</span>
+  <span>ABOUT</span>
+  <span>CONTACT</span>
+</div>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="hero__grid">
+
+    <!-- LEFT: text -->
+    <div class="hero__text">
+
+      <div class="side-deco side-deco--hero-right">
+        <img src="assets/images/leaf-img13.png" alt="">
+      </div>
+
+      <div class="hero__content">
+        <div class="hero__kicker">KITCHEN CAR</div>
+        <div class="hero__title-row">
+          <img src="assets/images/leaf_logo_bk_backless.png" class="hero__logo" alt="LEAF">
+          <div class="hero__title">LEAF</div>
+        </div>
+        <p class="hero__lead">
+          心を込めて、ひとつひとつ。<br>美味しい笑顔をお届けします。
+        </p>
+      </div>
+
+      <div class="side-deco side-deco--hero-left">
+        <img src="assets/images/leaf-img01.png" alt="">
+      </div>
+
+    </div>
+
+    <!-- RIGHT: hero photo -->
+    <div class="hero__photo">
+      <img src="assets/images/hero_sample.png" alt="LEAF キッチンカー">
+    </div>
+
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider">
+  <img src="assets/images/leaf-img05.png" alt="">
+</div>
+
+<!-- ========== SCHEDULE ========== -->
+<section class="section schedule" id="schedule">
+
+  <div class="side-deco schedule__deco-left">
+    <img src="assets/images/leaf-img16.png" alt="">
+  </div>
+  <div class="side-deco schedule__deco-right">
+    <img src="assets/images/leaf-img17.png" alt="">
+  </div>
+
+  <div class="inner">
+    <div class="section-title">
+      <div class="section-title__en">SCHEDULE</div>
+      <div class="section-title__jp">出店スケジュール</div>
+      <div class="section-title__deco">
+        <img src="assets/images/leaf-img15.png" alt="">
+      </div>
+    </div>
+
+    <div class="schedule__grid">
+
+      <!-- Left: Calendar -->
+      <div class="schedule__left">
+        <div class="calendar">
+          <div class="calendar__header">
+            <button class="calendar__nav" aria-label="前の月">‹</button>
+            <div class="calendar__title">2025年 5月</div>
+            <button class="calendar__nav" aria-label="次の月">›</button>
+          </div>
+          <div class="calendar__weekdays">
+            <span class="sun">日</span>
+            <span>月</span>
+            <span>火</span>
+            <span>水</span>
+            <span>木</span>
+            <span>金</span>
+            <span class="sat">土</span>
+          </div>
+          <div class="calendar__days"></div>
+          <div class="calendar__legend">
+            <span class="calendar__legend-dot"></span>
+            出店予定日
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Events -->
+      <div class="schedule__right">
+        <div class="schedule__heading">近日の出店予定</div>
+        <div class="event-list"></div>
+        <div class="schedule__cta">
+          <a href="#" class="btn-pill">
+            スケジュールをもっと見る
+            <img src="assets/images/leaf-icon01.png" alt="">
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider divider--soft">
+  <img src="assets/images/leaf-img10.png" alt="">
+</div>
+
+<!-- ========== MENU ========== -->
+<section class="section menu" id="menu">
+
+  <div class="side-deco menu__deco-left">
+    <img src="assets/images/leaf-img14.png" alt="">
+  </div>
+  <div class="side-deco menu__deco-right">
+    <img src="assets/images/leaf-img08.png" alt="">
+  </div>
+
+  <div class="inner">
+    <div class="section-title">
+      <div class="section-title__en">MENU</div>
+      <div class="section-title__jp">メニュー</div>
+      <div class="section-title__deco">
+        <img src="assets/images/leaf-img15.png" alt="">
+      </div>
+    </div>
+
+    <div class="menu-cards"></div>
+
+    <div class="menu__cta">
+      <a href="#" class="btn-pill">
+        メニューをもっと見る
+        <img src="assets/images/leaf-icon01.png" alt="">
+      </a>
+    </div>
+  </div>
+
+  <!-- Photo gallery strip — full width -->
+  <div class="photo-strip">
+    <div class="photo-strip__item" style="background: #d5d1ca;"></div>
+    <div class="photo-strip__item" style="background: #ccc8c0;"></div>
+    <div class="photo-strip__item" style="background: #d0cdc6;"></div>
+    <div class="photo-strip__item" style="background: #c8c4bc;"></div>
+  </div>
+
+</section>
+
+<!-- DIVIDER -->
+<div class="divider divider--flip">
+  <img src="assets/images/leaf-img05.png" alt="">
+</div>
+
+<!-- ========== LEAFの想い ========== -->
+<section class="section about" id="about">
+
+  <div class="side-deco about__deco-1">
+    <img src="assets/images/leaf-img06.png" alt="">
+  </div>
+  <div class="side-deco about__deco-2">
+    <img src="assets/images/leaf-img04.png" alt="">
+  </div>
+  <div class="side-deco about__deco-3">
+    <img src="assets/images/leaf-img09.png" alt="">
+  </div>
+  <div class="side-deco about__deco-4">
+    <img src="assets/images/leaf-img12.png" alt="">
+  </div>
+
+  <div class="inner about__inner">
+    <div class="about__heading">
+      <div class="about__title">LEAFの想い</div>
+      <div class="about__deco">
+        <img src="assets/images/leaf-img15.png" alt="">
+      </div>
+    </div>
+    <p class="about__text">
+      キッチンカーLEAFは、ひとつひとつ丁寧に手作りしています。<br>
+      素材の美味しさを大切に、ほっとする時間と笑顔をお届けしたい。<br>
+      みなさまの「おいしい！」が、私たちの喜びです。
+    </p>
+  </div>
+</section>
+
+<!-- ========== CONTACT ========== -->
+<section class="section contact" id="contact">
+
+  <div class="inner">
+    <div class="section-title">
+      <div class="section-title__en">CONTACT</div>
+      <div class="section-title__jp">ご注文・お問い合わせ</div>
+      <div class="section-title__deco">
+        <img src="assets/images/leaf-img15.png" alt="">
+      </div>
+    </div>
+
+    <div class="contact__grid">
+
+      <!-- Phone -->
+      <div class="contact-block">
+        <div class="contact-block__label">電話でのお問い合わせ</div>
+        <img src="assets/images/leaf-icon02.png" class="contact-block__icon" alt="">
+        <a href="tel:090-3983-2937" class="contact-block__phone">090-3983-2937</a>
+      </div>
+
+      <!-- Instagram -->
+      <div class="contact-block contact-block--ig">
+        <img src="assets/images/leaf-icon06.png" class="contact-block__icon contact-block__icon--ig" alt="">
+        <div class="contact-block__qr">
+          <span>QR コード</span>
+        </div>
+        <a href="https://www.instagram.com/LEAF10500" target="_blank" rel="noopener" class="contact-block__ig-handle">@LEAF10500</a>
+      </div>
+
+      <!-- 出店依頼 -->
+      <div class="contact-block">
+        <p class="contact-block__text">キッチンカーのご依頼も<br>お気軽にご相談ください</p>
+        <img src="assets/images/leaf-icon03.png" class="contact-block__icon contact-block__icon--order" alt="">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="inner footer__inner">
+    <img src="assets/images/leaf_logo_bk_backless.png" class="footer__logo" alt="LEAF">
+    <span class="footer__label">KITCHEN CAR LEAF</span>
+    <span class="footer__sep">│</span>
+    <span class="footer__address">〒987-0601 宮城県登米市中田町石森字奈72-12</span>
+  </div>
+</footer>
+
+<!-- ========== MENU DETAIL MODAL ========== -->
+<div class="menu-modal" id="menuModal">
+  <div class="menu-modal__panel">
+    <button class="menu-modal__close" aria-label="閉じる">×</button>
+    <div class="menu-modal__image"></div>
+    <div class="menu-modal__body">
+      <div class="menu-modal__category"></div>
+      <div class="menu-modal__name"></div>
+      <p class="menu-modal__desc"></p>
+      <div class="menu-modal__price"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/sheets.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/schedule.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(mkdir -p \"/d/納品物/LEAF/Site/_handoff\")",
+      "Bash(unzip -o \"C:\\\\Users\\\\passm\\\\Desktop\\\\LEAF HomePage-handoff.zip\")",
+      "Read(//d/d/納品物/LEAF/Site/_handoff/leaf-homepage/project/**)"
+    ]
+  }
+}
