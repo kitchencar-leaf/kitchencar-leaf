@@ -8,7 +8,7 @@
     btn.setAttribute('aria-expanded', String(isOpen));
   });
 
-  drawer.querySelectorAll('span').forEach((link) => {
+  drawer.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
       drawer.classList.remove('is-open');
       btn.setAttribute('aria-expanded', 'false');

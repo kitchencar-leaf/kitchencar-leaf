@@ -133,7 +133,7 @@ const ScheduleView = (() => {
     if (type === 'closed') {
       inner += '<span class="calendar__day-cell__watermark">休</span>';
     } else if (type === 'canceled') {
-      inner += '<span class="calendar__day-cell__mark">×</span>';
+      inner += '<span class="calendar__day-cell__mark">中止</span>';
       if (ev.place) {
         inner += `<span class="calendar__day-cell__place">${escapeHtml(ev.place)}</span>`;
       }
@@ -206,8 +206,6 @@ const ScheduleView = (() => {
 
   function modalContentHtml(ev) {
     const type = getScheduleDisplayType(ev);
-    const status = normalizeStatus(ev.status);
-    const statusLabel = status === 'canceled' ? '中止' : '通常表示';
 
     const rows = [];
     if (ev.place) rows.push(['出店場所', escapeHtml(ev.place)]);
@@ -220,10 +218,6 @@ const ScheduleView = (() => {
       <span class="schedule-modal__badge schedule-modal__badge--${type}">${TYPE_LABEL[type]}</span>
       <div class="schedule-modal__date">${formatEventDate(ev.dateObj)}</div>
       <div class="schedule-modal__rows">
-        <div class="schedule-modal__row">
-          <span class="schedule-modal__row-label">ステータス</span>
-          <span class="schedule-modal__row-value">${statusLabel}</span>
-        </div>
         ${rows.map(([label, value]) => `
         <div class="schedule-modal__row">
           <span class="schedule-modal__row-label">${label}</span>

@@ -12,11 +12,11 @@
 <nav class="nav">
   <img src="assets/images/leaf_logo_bk_backless.png" class="nav__logo" alt="LEAF">
   <div class="nav__links" id="navLinks">
-    <span>HOME</span>
-    <span>MENU</span>
-    <span>SCHEDULE</span>
-    <span>ABOUT</span>
-    <span>CONTACT</span>
+    <a href="#home">HOME</a>
+    <a href="#menu">MENU</a>
+    <a href="#schedule">SCHEDULE</a>
+    <a href="#about">ABOUT</a>
+    <a href="#contact">CONTACT</a>
     <div class="nav__social">
       <img src="assets/images/leaf-icon06.png" alt="Instagram">
     </div>
@@ -29,15 +29,15 @@
 </nav>
 
 <div class="nav-drawer" id="navDrawer">
-  <span>HOME</span>
-  <span>MENU</span>
-  <span>SCHEDULE</span>
-  <span>ABOUT</span>
-  <span>CONTACT</span>
+  <a href="#home">HOME</a>
+  <a href="#menu">MENU</a>
+  <a href="#schedule">SCHEDULE</a>
+  <a href="#about">ABOUT</a>
+  <a href="#contact">CONTACT</a>
 </div>
 
 <!-- ========== HERO ========== -->
-<section class="hero">
+<section class="hero" id="home">
   <div class="hero__grid">
 
     <!-- LEFT: text -->
@@ -117,11 +117,10 @@
           </div>
           <div class="calendar__days"></div>
           <div class="calendar__legend">
-            <span class="calendar__legend-item"><span class="calendar__legend-dot calendar__legend-dot--regular"></span>通常出店</span>
-            <span class="calendar__legend-item"><span class="calendar__legend-dot calendar__legend-dot--event"></span>イベント出店</span>
-            <span class="calendar__legend-item"><span class="calendar__legend-dot calendar__legend-dot--closed"></span>お休み</span>
-            <span class="calendar__legend-item"><span class="calendar__legend-dot calendar__legend-dot--canceled"></span>中止</span>
+            <span class="calendar__legend-item"><span class="calendar__legend-dot calendar__legend-dot--regular"></span>営業</span>
+            <span class="calendar__legend-item"><span class="calendar__legend-dot calendar__legend-dot--event"></span>イベント</span>
           </div>
+          <p class="calendar__note">予定の入っていない日については未定です</p>
         </div>
       </div>
 
