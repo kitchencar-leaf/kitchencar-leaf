@@ -79,10 +79,10 @@ const ScheduleView = (() => {
   // ---- Upcoming list (next 3 visible entries from today onward, regardless
   // of how many days apart they are) ----
 
-  function eventItemHtml(ev) {
+  function eventItemHtml(ev, index) {
     const type = getScheduleDisplayType(ev);
     return `
-      <div class="event-item" data-day="${ev.dateObj.getTime()}">
+      <div class="event-item" data-index="${index}" tabindex="0" role="button" aria-label="${formatEventDate(ev.dateObj)}の予定の詳細を見る">
         <div class="event-item__date-row">
           <span class="event-item__date">${formatEventDate(ev.dateObj)}</span>
           ${ev.start_time ? `<span class="event-item__time">${escapeHtml(ev.start_time)}${ev.end_time ? `–${escapeHtml(ev.end_time)}` : ''}</span>` : ''}
@@ -98,6 +98,23 @@ const ScheduleView = (() => {
     `;
   }
 
+  function setupEventListClicks(upcoming) {
+    document.querySelectorAll('.event-item').forEach((item) => {
+      const ev = upcoming[Number(item.dataset.index)];
+      const open = (e) => {
+        if (e.target.closest('.event-item__map')) return;
+        openScheduleModal(ev);
+      };
+      item.addEventListener('click', open);
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          open(e);
+        }
+      });
+    });
+  }
+
   function renderEventList() {
     const list = document.querySelector('.event-list');
     if (!list) return;
@@ -111,7 +128,8 @@ const ScheduleView = (() => {
       list.innerHTML = '<p class="event-list__empty">現在、出店予定はありません。</p>';
       return;
     }
-    list.innerHTML = upcoming.map(eventItemHtml).join('');
+    list.innerHTML = upcoming.map((ev, i) => eventItemHtml(ev, i)).join('');
+    setupEventListClicks(upcoming);
   }
 
   // ---- Calendar ----

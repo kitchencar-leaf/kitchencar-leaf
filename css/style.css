@@ -563,10 +563,17 @@ a {
   display: flex;
   flex-direction: column;
   gap: 7px;
+  cursor: pointer;
 }
 
 .event-item:last-child {
   border-bottom: none;
+}
+
+.event-item:hover,
+.event-item:focus-visible {
+  background: rgba(74, 107, 60, 0.04);
+  outline: none;
 }
 
 .event-item__date-row {
