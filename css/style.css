@@ -1021,17 +1021,17 @@ a {
   border-radius: 8px;
   width: 96px;
   height: 96px;
-  background: #ece9e2;
+  background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
-.contact-block__qr span {
-  font-size: 10px;
-  color: #b0aca5;
-  letter-spacing: 0.04em;
-  font-weight: 300;
+.contact-block__qr img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .contact-block__ig-handle {
