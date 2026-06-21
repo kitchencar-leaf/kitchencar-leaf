@@ -1,6 +1,29 @@
-// Renders the MENU section from the "menu" Google Sheet tab and wires up
-// the tap-to-enlarge modal.
+// Renders the MENU section from the "menu" Google Sheet tab: tab filtering
+// (おすすめ/季節限定/フード/ドリンク/その他), card grid, and the
+// tap-to-enlarge modal.
 const MenuView = (() => {
+  const CATEGORY_FALLBACK = {
+    food: 'food',
+    drink: 'drink',
+    other: 'other',
+    main: 'food',
+    side: 'food',
+    limited: 'food',
+    soup: 'food',
+    sandwich: 'food',
+  };
+
+  const TABS = [
+    { key: 'recommend', label: 'おすすめ', filter: (item) => item.recommend },
+    { key: 'seasonal', label: '季節限定', filter: (item) => item.seasonal },
+    { key: 'food', label: 'フード', filter: (item) => item.category === 'food' },
+    { key: 'drink', label: 'ドリンク', filter: (item) => item.category === 'drink' },
+    { key: 'other', label: 'その他', filter: (item) => item.category === 'other' },
+  ];
+
+  let allItems = [];
+  let currentTab = TABS[0].key;
+
   function escapeHtml(str) {
     return String(str)
       .replace(/&/g, '&amp;')
@@ -9,27 +32,70 @@ const MenuView = (() => {
       .replace(/"/g, '&quot;');
   }
 
+  function parseBool(value) {
+    return String(value || '').trim().toUpperCase() === 'TRUE';
+  }
+
+  function parseVisible(value) {
+    const trimmed = String(value || '').trim();
+    if (trimmed === '') return true; // legacy rows with no visible column
+    return trimmed.toUpperCase() === 'TRUE';
+  }
+
+  function normalizeCategory(raw) {
+    const value = String(raw || '').trim().toLowerCase();
+    return CATEGORY_FALLBACK[value] || 'food';
+  }
+
+  function parseSortOrder(raw) {
+    const n = Number(String(raw || '').trim());
+    return Number.isFinite(n) && String(raw || '').trim() !== '' ? n : 9999;
+  }
+
+  function normalizeItem(row) {
+    return {
+      ...row,
+      category: normalizeCategory(row.category),
+      recommend: parseBool(row.recommend),
+      seasonal: parseBool(row.seasonal),
+      visible: parseVisible(row.visible),
+      sortOrder: parseSortOrder(row.sort_order),
+    };
+  }
+
   function formatPrice(price) {
-    const n = Number(String(price).replace(/[^\d.]/g, ''));
-    if (!price || Number.isNaN(n)) return '¥—';
-    return `¥${n.toLocaleString('ja-JP')}`;
+    const trimmed = String(price || '').trim();
+    if (!trimmed) return null;
+    const n = Number(trimmed.replace(/[^\d.]/g, ''));
+    if (Number.isNaN(n)) return null;
+    return `${n.toLocaleString('ja-JP')}円`;
+  }
+
+  function badgesHtml(item) {
+    if (!item.recommend && !item.seasonal) return '';
+    return `
+      <div class="menu-card__badges">
+        ${item.recommend ? '<img src="assets/images/badge-recommend.png" class="menu-card__badge-img" alt="おすすめ">' : ''}
+        ${item.seasonal ? '<img src="assets/images/badge-seasonal.png" class="menu-card__badge-img" alt="季節限定">' : ''}
+      </div>
+    `;
   }
 
   function cardHtml(item, index) {
     const hasImage = item.image && item.image.trim() !== '';
-    const isRecommended = String(item.recommend).trim().toUpperCase() === 'TRUE';
+    const price = formatPrice(item.price);
     return `
       <div class="menu-card" data-index="${index}" tabindex="0" role="button" aria-label="${escapeHtml(item.name)}の詳細を見る">
-        ${isRecommended ? '<div class="menu-card__badge">おすすめ</div>' : ''}
         <div class="menu-card__image">
+          ${badgesHtml(item)}
           ${hasImage
             ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy">`
-            : `<div class="menu-card__noimage">No Image</div>`}
+            : `<div class="menu-card__noimage"><img src="assets/images/leaf-img11.png" alt=""></div>`}
         </div>
         <div class="menu-card__body">
-          ${item.category ? `<div class="menu-card__category">${escapeHtml(item.category)}</div>` : ''}
           <div class="menu-card__name">${escapeHtml(item.name)}</div>
-          <div class="menu-card__price">${formatPrice(item.price)}</div>
+          ${item.desc ? `<p class="menu-card__desc">${escapeHtml(item.desc)}</p>` : ''}
+          ${price ? `<div class="menu-card__price">${price}</div>` : ''}
         </div>
       </div>
     `;
@@ -41,13 +107,15 @@ const MenuView = (() => {
 
     modal.querySelector('.menu-modal__image').innerHTML = hasImage
       ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">`
-      : `<div class="menu-card__noimage">No Image</div>`;
-    modal.querySelector('.menu-modal__category').textContent = item.category || '';
-    modal.querySelector('.menu-modal__category').style.display = item.category ? '' : 'none';
+      : `<div class="menu-card__noimage"><img src="assets/images/leaf-img11.png" alt=""></div>`;
+    modal.querySelector('.menu-modal__category').textContent = '';
+    modal.querySelector('.menu-modal__category').style.display = 'none';
     modal.querySelector('.menu-modal__name').textContent = item.name;
     modal.querySelector('.menu-modal__desc').textContent = item.desc || '';
     modal.querySelector('.menu-modal__desc').style.display = item.desc ? '' : 'none';
-    modal.querySelector('.menu-modal__price').textContent = formatPrice(item.price);
+    const price = formatPrice(item.price);
+    modal.querySelector('.menu-modal__price').textContent = price || '';
+    modal.querySelector('.menu-modal__price').style.display = price ? '' : 'none';
 
     modal.classList.add('is-open');
     document.body.classList.add('modal-open');
@@ -59,7 +127,7 @@ const MenuView = (() => {
     document.body.classList.remove('modal-open');
   }
 
-  function setupModal(items) {
+  function setupModalChrome() {
     const modal = document.getElementById('menuModal');
     if (!modal) return;
 
@@ -70,7 +138,9 @@ const MenuView = (() => {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
     });
+  }
 
+  function bindCardClicks(items) {
     document.querySelectorAll('.menu-card').forEach((card) => {
       const index = Number(card.dataset.index);
       const open = () => openModal(items[index]);
@@ -84,19 +154,50 @@ const MenuView = (() => {
     });
   }
 
+  function renderGrid() {
+    const grid = document.querySelector('.menu-cards');
+    if (!grid) return;
+
+    const tab = TABS.find((t) => t.key === currentTab) || TABS[0];
+    const filtered = allItems.filter(tab.filter);
+
+    if (!filtered.length) {
+      grid.innerHTML = '<p class="menu-cards__empty">現在表示できるメニューはありません。</p>';
+      return;
+    }
+
+    grid.innerHTML = filtered.map((item, i) => cardHtml(item, i)).join('');
+    bindCardClicks(filtered);
+  }
+
+  function setupTabs() {
+    const tabsEl = document.getElementById('menuTabs');
+    if (!tabsEl) return;
+
+    tabsEl.querySelectorAll('.menu-tabs__btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (btn.dataset.tab === currentTab) return;
+        currentTab = btn.dataset.tab;
+        tabsEl.querySelectorAll('.menu-tabs__btn').forEach((b) => b.classList.toggle('is-active', b === btn));
+        renderGrid();
+      });
+    });
+  }
+
   async function render() {
     const grid = document.querySelector('.menu-cards');
     if (!grid) return;
 
     try {
-      const items = await SHEETS.fetchSheet('menu');
-      if (!items.length) {
-        grid.innerHTML = '<p class="menu-cards__empty">現在、メニュー情報がありません。</p>';
-        return;
-      }
+      const rows = await SHEETS.fetchSheet('menu');
+      allItems = rows
+        .map(normalizeItem)
+        .filter((item) => item.visible)
+        .sort((a, b) => a.sortOrder - b.sortOrder);
 
-      grid.innerHTML = items.map(cardHtml).join('');
-      setupModal(items);
+      renderGrid();
+      setupTabs();
+      setupModalChrome();
     } catch (err) {
       console.error('MenuView: failed to load menu sheet', err);
       grid.innerHTML = '<p class="menu-cards__empty">メニュー情報の読み込みに失敗しました。</p>';
