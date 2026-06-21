@@ -145,6 +145,28 @@ a {
   overflow: hidden;
 }
 
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__content {
+    animation: heroFadeIn 0.9s ease-out both;
+  }
+
+  .hero__photo {
+    animation: heroFadeIn 1s ease-out both;
+    animation-delay: 0.15s;
+  }
+}
+
 .hero__grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -202,6 +224,7 @@ a {
   line-height: 2;
   font-weight: 300;
   margin: 0;
+  margin-left: 100px;
   max-width: 280px;
 }
 
@@ -833,6 +856,8 @@ a {
 .photo-strip {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background: #f5f2eb;
 }
 
 .photo-strip__item {
@@ -1068,6 +1093,10 @@ a {
 @media (min-width: 768px) {
   .inner {
     padding: 0 60px;
+  }
+
+  .hero__lead {
+    margin-left: 0;
   }
 
   .nav__links {
