@@ -71,14 +71,16 @@ const MenuView = (() => {
     return `${n.toLocaleString('ja-JP')}円`;
   }
 
+  function badgeImagesHtml(item) {
+    return `
+      ${item.recommend ? '<img src="assets/images/badge-recommend.png" class="menu-card__badge-img" alt="おすすめ">' : ''}
+      ${item.seasonal ? '<img src="assets/images/badge-seasonal.png" class="menu-card__badge-img" alt="季節限定">' : ''}
+    `;
+  }
+
   function badgesHtml(item) {
     if (!item.recommend && !item.seasonal) return '';
-    return `
-      <div class="menu-card__badges">
-        ${item.recommend ? '<img src="assets/images/badge-recommend.png" class="menu-card__badge-img" alt="おすすめ">' : ''}
-        ${item.seasonal ? '<img src="assets/images/badge-seasonal.png" class="menu-card__badge-img" alt="季節限定">' : ''}
-      </div>
-    `;
+    return `<div class="menu-card__badges">${badgeImagesHtml(item)}</div>`;
   }
 
   function cardHtml(item, index) {
@@ -105,9 +107,10 @@ const MenuView = (() => {
     const modal = document.getElementById('menuModal');
     const hasImage = item.image && item.image.trim() !== '';
 
-    modal.querySelector('.menu-modal__image').innerHTML = hasImage
+    modal.querySelector('.menu-modal__image-inner').innerHTML = hasImage
       ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">`
       : `<div class="menu-card__noimage"><img src="assets/images/leaf-img11.png" alt=""></div>`;
+    modal.querySelector('.menu-modal__badges').innerHTML = badgeImagesHtml(item);
     modal.querySelector('.menu-modal__category').textContent = '';
     modal.querySelector('.menu-modal__category').style.display = 'none';
     modal.querySelector('.menu-modal__name').textContent = item.name;
